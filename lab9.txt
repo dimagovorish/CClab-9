@@ -1,0 +1,267 @@
+Microsoft Windows [Version 10.0.18363.1256]
+(c) Корпорация Майкрософт (Microsoft Corporation), 2019. Все права защищены.
+
+C:\Users\User10>aws ecs create-cluster --cluster-name dmytro-cluster
+{
+    "cluster": {
+        "clusterArn": "arn:aws:ecs:us-east-1:871533708305:cluster/dmytro-cluster",
+        "clusterName": "dmytro-cluster",
+        "status": "ACTIVE",
+        "registeredContainerInstancesCount": 0,
+        "runningTasksCount": 0,
+        "pendingTasksCount": 0,
+        "activeServicesCount": 0,
+        "statistics": [],
+        "tags": [],
+        "settings": [
+            {
+                "name": "containerInsights",
+                "value": "disabled"
+            }
+        ],
+        "capacityProviders": [],
+        "defaultCapacityProviderStrategy": []
+    }
+}
+
+
+C:\Users\User10>aws ecs register-task-definition --cli-input-json file://fargatetask.json
+{
+    "taskDefinition": {
+        "taskDefinitionArn": "arn:aws:ecs:us-east-1:871533708305:task-definition/sample-fargate:2",
+        "containerDefinitions": [
+            {
+                "name": "fargate-app",
+                "image": "httpd:2.4",
+                "cpu": 0,
+                "portMappings": [
+                    {
+                        "containerPort": 80,
+                        "hostPort": 80,
+                        "protocol": "tcp"
+                    }
+                ],
+                "essential": true,
+                "entryPoint": [
+                    "sh",
+                    "-c"
+                ],
+                "command": [
+                    "/bin/sh -c \"echo '<html> <head> <title>Amazon ECS Sample App</title> <style>body {margin-top: 40px; background-color: #333;} </style> </head><body> <div style=color:white;text-align:center> <h1>Amazon ECS Sample App</h1> <h2>Congratulations!</h2> <p>Your application is now running on a container in Amazon ECS.</p> </div></body></html>' >  /usr/local/apache2/htdocs/index.html && httpd-foreground\""
+                ],
+                "environment": [],
+                "mountPoints": [],
+                "volumesFrom": []
+            }
+        ],
+        "family": "sample-fargate",
+        "networkMode": "awsvpc",
+        "revision": 2,
+        "volumes": [],
+        "status": "ACTIVE",
+        "requiresAttributes": [
+            {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+            },
+            {
+                "name": "ecs.capability.task-eni"
+            }
+        ],
+        "placementConstraints": [],
+        "compatibilities": [
+            "EC2",
+            "FARGATE"
+        ],
+        "requiresCompatibilities": [
+            "FARGATE"
+        ],
+        "cpu": "256",
+        "memory": "512"
+    }
+}
+
+
+C:\Users\User10>
+C:\Users\User10>
+C:\Users\User10>
+C:\Users\User10>
+C:\Users\User10>
+C:\Users\User10>
+C:\Users\User10>aws ecs list-task-definitions
+{
+    "taskDefinitionArns": [
+        "arn:aws:ecs:us-east-1:871533708305:task-definition/sample-fargate:1",
+        "arn:aws:ecs:us-east-1:871533708305:task-definition/sample-fargate:2"
+    ]
+}
+
+
+C:\Users\User10>
+C:\Users\User10>aws ecs create-service --cluster dmytro-cluster --service-name dmytro-service --task-definition sample-fargate:1 --desired-count 1 --launch-type "FARGATE" --network-configuration "awsvpcConfiguration={subnets=[subnet-0194490a38296e5a1],securityGroups=[sg-00848e4a971d27174],assignPublicIp=ENABLED}"
+{
+    "service": {
+        "serviceArn": "arn:aws:ecs:us-east-1:871533708305:service/dmytro-cluster/dmytro-service",
+        "serviceName": "dmytro-service",
+        "clusterArn": "arn:aws:ecs:us-east-1:871533708305:cluster/dmytro-cluster",
+        "loadBalancers": [],
+        "serviceRegistries": [],
+        "status": "ACTIVE",
+        "desiredCount": 1,
+        "runningCount": 0,
+        "pendingCount": 0,
+        "launchType": "FARGATE",
+        "platformVersion": "LATEST",
+        "taskDefinition": "arn:aws:ecs:us-east-1:871533708305:task-definition/sample-fargate:1",
+        "deploymentConfiguration": {
+            "maximumPercent": 200,
+            "minimumHealthyPercent": 100
+        },
+        "deployments": [
+            {
+                "id": "ecs-svc/4608109437241348603",
+                "status": "PRIMARY",
+                "taskDefinition": "arn:aws:ecs:us-east-1:871533708305:task-definition/sample-fargate:1",
+                "desiredCount": 1,
+                "pendingCount": 0,
+                "runningCount": 0,
+                "createdAt": "2020-12-12T13:15:43.393000+02:00",
+                "updatedAt": "2020-12-12T13:15:43.393000+02:00",
+                "launchType": "FARGATE",
+                "platformVersion": "1.3.0",
+                "networkConfiguration": {
+                    "awsvpcConfiguration": {
+                        "subnets": [
+                            "subnet-0194490a38296e5a1"
+                        ],
+                        "securityGroups": [
+                            "sg-00848e4a971d27174"
+                        ],
+                        "assignPublicIp": "ENABLED"
+                    }
+                }
+            }
+        ],
+        "roleArn": "arn:aws:iam::871533708305:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS",
+        "events": [],
+        "createdAt": "2020-12-12T13:15:43.393000+02:00",
+        "placementConstraints": [],
+        "placementStrategy": [],
+        "networkConfiguration": {
+            "awsvpcConfiguration": {
+                "subnets": [
+                    "subnet-0194490a38296e5a1"
+                ],
+                "securityGroups": [
+                    "sg-00848e4a971d27174"
+                ],
+                "assignPublicIp": "ENABLED"
+            }
+        },
+        "schedulingStrategy": "REPLICA",
+        "createdBy": "arn:aws:iam::871533708305:user/dimabuno",
+        "enableECSManagedTags": false,
+        "propagateTags": "NONE"
+    }
+}
+
+
+C:\Users\User10>
+C:\Users\User10>
+C:\Users\User10>
+C:\Users\User10>
+C:\Users\User10>
+C:\Users\User10>
+C:\Users\User10>aws ecs list-services --cluster dmytro-cluster
+{
+    "serviceArns": [
+        "arn:aws:ecs:us-east-1:871533708305:service/dmytro-cluster/dmytro-service"
+    ]
+}
+
+
+C:\Users\User10>aws ecs describe-services --cluster dmytro-cluster --services dmytro-service
+{
+    "services": [
+        {
+            "serviceArn": "arn:aws:ecs:us-east-1:871533708305:service/dmytro-cluster/dmytro-service",
+            "serviceName": "dmytro-service",
+            "clusterArn": "arn:aws:ecs:us-east-1:871533708305:cluster/dmytro-cluster",
+            "loadBalancers": [],
+            "serviceRegistries": [],
+            "status": "ACTIVE",
+            "desiredCount": 1,
+            "runningCount": 1,
+            "pendingCount": 0,
+            "launchType": "FARGATE",
+            "platformVersion": "LATEST",
+            "taskDefinition": "arn:aws:ecs:us-east-1:871533708305:task-definition/sample-fargate:1",
+            "deploymentConfiguration": {
+                "maximumPercent": 200,
+                "minimumHealthyPercent": 100
+            },
+            "deployments": [
+                {
+                    "id": "ecs-svc/4608109437241348603",
+                    "status": "PRIMARY",
+                    "taskDefinition": "arn:aws:ecs:us-east-1:871533708305:task-definition/sample-fargate:1",
+                    "desiredCount": 1,
+                    "pendingCount": 0,
+                    "runningCount": 1,
+                    "createdAt": "2020-12-12T13:15:43.393000+02:00",
+                    "updatedAt": "2020-12-12T13:16:15.768000+02:00",
+                    "launchType": "FARGATE",
+                    "platformVersion": "1.3.0",
+                    "networkConfiguration": {
+                        "awsvpcConfiguration": {
+                            "subnets": [
+                                "subnet-0194490a38296e5a1"
+                            ],
+                            "securityGroups": [
+                                "sg-00848e4a971d27174"
+                            ],
+                            "assignPublicIp": "ENABLED"
+                        }
+                    }
+                }
+            ],
+            "roleArn": "arn:aws:iam::871533708305:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS",
+            "events": [
+                {
+                    "id": "824e3245-54e7-4009-be0a-abc4d1396d25",
+                    "createdAt": "2020-12-12T13:16:15.775000+02:00",
+                    "message": "(service dmytro-service) has reached a steady state."
+                },
+                {
+                    "id": "74de33f1-098c-4f0a-bb41-ae5fd08ceabb",
+                    "createdAt": "2020-12-12T13:16:15.774000+02:00",
+                    "message": "(service dmytro-service) (deployment ecs-svc/4608109437241348603) deployment completed."                },
+                {
+                    "id": "f94e82a2-11f1-4e54-906e-270077e8ddc0",
+                    "createdAt": "2020-12-12T13:15:45.740000+02:00",
+                    "message": "(service dmytro-service) has started 1 tasks: (task 597a5cff335549199ef3698c323631cd)."
+                }
+            ],
+            "createdAt": "2020-12-12T13:15:43.393000+02:00",
+            "placementConstraints": [],
+            "placementStrategy": [],
+            "networkConfiguration": {
+                "awsvpcConfiguration": {
+                    "subnets": [
+                        "subnet-0194490a38296e5a1"
+                    ],
+                    "securityGroups": [
+                        "sg-00848e4a971d27174"
+                    ],
+                    "assignPublicIp": "ENABLED"
+                }
+            },
+            "schedulingStrategy": "REPLICA",
+            "createdBy": "arn:aws:iam::871533708305:user/dimabuno",
+            "enableECSManagedTags": false,
+            "propagateTags": "NONE"
+        }
+    ],
+    "failures": []
+}
+
+

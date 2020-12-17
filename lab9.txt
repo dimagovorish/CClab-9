@@ -80,13 +80,6 @@ C:\Users\User10>aws ecs register-task-definition --cli-input-json file://fargate
     }
 }
 
-
-C:\Users\User10>
-C:\Users\User10>
-C:\Users\User10>
-C:\Users\User10>
-C:\Users\User10>
-C:\Users\User10>
 C:\Users\User10>aws ecs list-task-definitions
 {
     "taskDefinitionArns": [
@@ -95,8 +88,6 @@ C:\Users\User10>aws ecs list-task-definitions
     ]
 }
 
-
-C:\Users\User10>
 C:\Users\User10>aws ecs create-service --cluster dmytro-cluster --service-name dmytro-service --task-definition sample-fargate:1 --desired-count 1 --launch-type "FARGATE" --network-configuration "awsvpcConfiguration={subnets=[subnet-0194490a38296e5a1],securityGroups=[sg-00848e4a971d27174],assignPublicIp=ENABLED}"
 {
     "service": {
@@ -164,20 +155,12 @@ C:\Users\User10>aws ecs create-service --cluster dmytro-cluster --service-name d
     }
 }
 
-
-C:\Users\User10>
-C:\Users\User10>
-C:\Users\User10>
-C:\Users\User10>
-C:\Users\User10>
-C:\Users\User10>
 C:\Users\User10>aws ecs list-services --cluster dmytro-cluster
 {
     "serviceArns": [
         "arn:aws:ecs:us-east-1:871533708305:service/dmytro-cluster/dmytro-service"
     ]
 }
-
 
 C:\Users\User10>aws ecs describe-services --cluster dmytro-cluster --services dmytro-service
 {
